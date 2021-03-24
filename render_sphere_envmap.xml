@@ -1,0 +1,41 @@
+<scene version="0.5.0">
+	<integrator type="direct">
+		<boolean name="hideEmitters" value="true" />
+		<integer name="maxDepth" value="8" />
+	</integrator>
+	<sensor type="perspective">
+		<float name="fov" value="50" />
+		<sampler type="independent">
+			<integer name="sampleCount" value="8" />
+		</sampler>
+		<film type="hdrfilm">
+			<integer name="width" value="600" />
+			<integer name="height" value="400" />
+			<boolean name="banner" value="false" />
+			<string name="pixelFormat" value="rgba" />
+			<boolean name="attachLog" value="false" />
+		</film>
+	</sensor>
+	<shape type="sphere">
+		<transform name="toWorld">
+			<scale x=".15" y="1" z=".15" />
+			<translate x="$objx" y="$objy" z="$objz" />
+		</transform>
+		<bsdf type="conductor">
+			<string name="material" value="none" />
+		</bsdf>
+	</shape>
+	<shape type="rectangle">
+		<bsdf type="diffuse">
+			<spectrum name="reflectance" value="1, 1, 1" />
+		</bsdf>
+		<transform name="toWorld">
+			<rotate x="1" angle="-120" />
+			<scale x=".4" y=".5" z="10" />
+			<translate x=".05" y="-.18" z="10" />
+		</transform>
+	</shape>
+	<emitter type="envmap">
+		<string name="filename" value="render_pano.exr" />
+	</emitter>
+</scene>

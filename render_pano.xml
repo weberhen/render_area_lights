@@ -1,0 +1,46 @@
+<scene version="0.5.0">
+	<integrator type="direct">
+		<boolean name="hideEmitters" value="false" />
+		<integer name="maxDepth" value="8" />
+	</integrator>
+	<sensor type="spherical">
+		<float name="fov" value="50" />
+		<sampler type="independent">
+			<integer name="sampleCount" value="8" />
+		</sampler>
+		<film type="hdrfilm">
+			<integer name="width" value="600" />
+			<integer name="height" value="300" />
+			<boolean name="banner" value="false" />
+			<string name="pixelFormat" value="rgba" />
+			<boolean name="attachLog" value="false" />
+		</film>
+	</sensor>
+	<shape type="sphere">
+		<transform name="toWorld">
+			<scale value="0.0885" />
+			<translate x="-2.1356406" y="1.23461943" z="-0.03468532" />
+		</transform>
+		<emitter type="area">
+			<spectrum name="radiance" value="2.5285, 2.6863, 3.2572" />
+		</emitter>
+	</shape>
+	<shape type="sphere">
+		<transform name="toWorld">
+			<scale value="0.0665" />
+			<translate x="1.3037382" y="2.29353069" z="0.89429226" />
+		</transform>
+		<emitter type="area">
+			<spectrum name="radiance" value="6.5889, 8.1095, 6.2580" />
+		</emitter>
+	</shape>
+	<shape type="sphere">
+		<transform name="toWorld">
+			<scale value="0.0596" />
+			<translate x="1.476108" y="1.43538714" z="1.9780449" />
+		</transform>
+		<emitter type="area">
+			<spectrum name="radiance" value="6.5108, 7.5243, 8.8027" />
+		</emitter>
+	</shape>
+</scene>

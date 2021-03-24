@@ -27,29 +27,29 @@
 	</shape>
 	<shape type="sphere">
 		<transform name="toWorld">
-			<scale value="0.0885" />
-			<translate x="-2.1356406" y="1.23461943" z="-0.03468532" />
+			<scale value="$scaleL1" />
+			<translate x="$posL1x" y="$posL1y" z="$posL1z" />
 		</transform>
 		<emitter type="area">
-			<spectrum name="radiance" value="2.5285, 2.6863, 3.2572" />
+			<spectrum name="radiance" value="$intL1" />
 		</emitter>
 	</shape>
 	<shape type="sphere">
 		<transform name="toWorld">
-			<scale value="0.0665" />
-			<translate x="1.3037382" y="2.29353069" z="0.89429226" />
+			<scale value="$scaleL2" />
+			<translate x="$posL2x" y="$posL2y" z="$posL2z" />
 		</transform>
 		<emitter type="area">
-			<spectrum name="radiance" value="6.5889, 8.1095, 6.2580" />
+			<spectrum name="radiance" value="$intL2" />
 		</emitter>
 	</shape>
 	<shape type="sphere">
 		<transform name="toWorld">
-			<scale value="0.0596" />
-			<translate x="1.476108" y="1.43538714" z="1.9780449" />
+			<scale value="$scaleL3" />
+			<translate x="$posL3x" y="$posL3y" z="$posL3z" />
 		</transform>
 		<emitter type="area">
-			<spectrum name="radiance" value="6.5108, 7.5243, 8.8027" />
+			<spectrum name="radiance" value="$intL3" />
 		</emitter>
 	</shape>
 	<shape type="rectangle">

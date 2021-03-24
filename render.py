@@ -3,21 +3,29 @@ import hdrio
 from scipy.ndimage.interpolation import zoom
 import imageio
 import numpy as np
+from read_3light_prediction import read_3light_prediction
+from create_mitsuba_command import create_mitsuba_command
 
 steps = 8
 obj_positions = [[.25, i/100, j] for i,j in zip(np.linspace(-27,0,steps), np.linspace(1,10,steps))]
 imInput = imageio.imread(os.path.join('class.jpg')).astype('float32') / 255.
 imInputResized = zoom(imInput, (400/imInput.shape[0], 600/imInput.shape[1], 1.0), order=1)
 
+pickle_filename = 'class.pkl'
+
 command = 'mitsuba render_pano.xml'
 os.system(command)
 
-scenes = ['render_sphere_envmap', 'render_sphere']
-# scenes = ['render_armadillo_envmap', 'render_armadillo']
+# scenes = ['render_sphere_envmap', 'render_sphere']
+scenes = ['render_armadillo_envmap', 'render_armadillo']
+
+
+posCenters, radius, intensities, ambients, depths = read_3light_prediction(pickle_filename)
 
 for scene in scenes:
     for i, obj_pos in enumerate(obj_positions):
-        command = 'mitsuba -Dobjx='+str(obj_pos[0])+' -Dobjy='+str(obj_pos[1])+' -Dobjz='+str(obj_pos[2])+' '+scene+'.xml'
+        command = create_mitsuba_command(obj_pos, posCenters, radius, intensities, ambients, depths, scene)
+        # command = 'mitsuba -Dobjx='+str(obj_pos[0])+' -Dobjy='+str(obj_pos[1])+' -Dobjz='+str(obj_pos[2])+' '+scene+'.xml'
         print(command)
         os.system(command)
         

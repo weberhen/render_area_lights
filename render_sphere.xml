@@ -18,7 +18,7 @@
 	</sensor>
 	<shape type="sphere">
 		<transform name="toWorld">
-			<scale x=".15" y="1" z=".15" />
+			<scale value=".17" />
 			<translate x="$objx" y="$objy" z="$objz" />
 		</transform>
 		<bsdf type="conductor">

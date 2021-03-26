@@ -13,6 +13,7 @@ from rotlib import rotx, roty, rotz, rotate
 def read_cor_id(layout, shape):
     with open(layout) as f:
         cor_id = np.array([line.split() for line in f], np.float32)
+    # cor_id*=8
     # last line of the text file is the size of the pano, here we make sure we 
     # are using the right dimensions to create the 3d 
     assert int(cor_id[-1,0]) == shape[1]

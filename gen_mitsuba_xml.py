@@ -8,17 +8,17 @@ def gen_mitsuba_xml(xyz, uv_S, texture, filename):
         colors[i] = texture[int(uv_S[1][i]*texture.shape[0])][int(uv_S[0][i]*texture.shape[1])]
         
     xml_string = '\n'.join(["<scene version='0.5.0'>",
-                                "   <integrator type='path'>",
+                                "   <integrator type='direct'>",
                                 "       <boolean name='hideEmitters' value='false' />",
                                 "       <integer name='maxDepth' value='8'/>",
                                 "   </integrator>",
                                 "   <sensor type='perspective'>",
-                                "       <float name='fov' value='75' />",
+                                "       <float name='fov' value='80' />",
                                 "       <sampler type='independent'>",
                                 "           <integer name='sampleCount' value='8' />",
                                 "       </sampler>",
                                 "       <transform name='toWorld'>",
-                                "           <lookat origin='0, 40, 100' target='0, 0, 0' up='0, 1, 0'/>",
+                                "           <lookat origin='0, 1, 1.5' target='0, 0, 0' up='0, 1, 0'/>",
                                 "       </transform>",
                                 "       <film type='hdrfilm'>",
                                 "           <integer name='width' value='600' />",
@@ -28,16 +28,16 @@ def gen_mitsuba_xml(xyz, uv_S, texture, filename):
                                 "           <boolean name='attachLog' value='false' />",
                                 "       </film>",
                                 "   </sensor>",
-                                "    <shape type='sphere'>",
-                                "        <transform name='toWorld'>",
-                                "            <scale value='20' />",
-                                "            <translate x='$objx' y='$objy' z='$objz' />",
-                                "            <translate x='0' y='-100' z='-80' />",
-                                "        </transform>",
-                                "        <bsdf type='conductor'>",
-                                "            <string name='material' value='none' />",
-                                "        </bsdf>",
-                                "    </shape>",
+                                # "    <shape type='sphere'>",
+                                # "        <transform name='toWorld'>",
+                                # "            <scale value='20' />",
+                                # "            <translate x='$objx' y='$objy' z='$objz' />",
+                                # "            <translate x='0' y='-100' z='-80' />",
+                                # "        </transform>",
+                                # "        <bsdf type='conductor'>",
+                                # "            <string name='material' value='none' />",
+                                # "        </bsdf>",
+                                # "    </shape>",
                                 # "   <shape type='ply'>",
                                 # "       <transform name='toWorld'>",
                                 # "           <scale value='100'/>",
@@ -56,15 +56,15 @@ def gen_mitsuba_xml(xyz, uv_S, texture, filename):
                                 # "           <translate x='.05' y='-.18' z='10'/>",
                                 # "       </transform>",
                                 # "   </shape>\n",
-                                "    <shape type='sphere'>",
-                                "        <transform name='toWorld'>",
-                                "            <scale value='1.0885' />",
-                                "            <translate x='-20.1356406' y='20.23461943' z='-0.3468532' />",
-                                "        </transform>",
-                                "        <emitter type='area'>",
-                                "            <spectrum name='radiance' value='400.5285, 400.6863, 600.2572' />",
-                                "        </emitter>",
-                                "    </shape>\n",
+                                # "    <shape type='sphere'>",
+                                # "        <transform name='toWorld'>",
+                                # "            <scale value='1.0885' />",
+                                # "            <translate x='-20.1356406' y='20.23461943' z='-0.3468532' />",
+                                # "        </transform>",
+                                # "        <emitter type='area'>",
+                                # "            <spectrum name='radiance' value='400.5285, 400.6863, 600.2572' />",
+                                # "        </emitter>",
+                                # "    </shape>\n",
                                 # "    <shape type='sphere'>",
                                 # "        <transform name='toWorld'>",
                                 # "            <scale value='1.0665' />",
@@ -87,29 +87,30 @@ def gen_mitsuba_xml(xyz, uv_S, texture, filename):
     
     for xyz_p, color_p in zip(xyz, colors):
         # if xyz_p[1] >= -150.:
-        #     xml_string+='\n'.join([
-        #         "   <shape type='sphere'>",
-        #         "        <transform name='toWorld'>",
-        #         "            <scale value='2' />",
-        #         "            <translate x='"+str(xyz_p[0])+"' y='"+str(xyz_p[1])+"' z='"+str(xyz_p[2])+"' />",
-        #         "        </transform>",
-        #         "       <emitter type='area'>",
-        #         "            <spectrum name='radiance' value='"+", ".join([str(color_p[0]/255.),str(color_p[1]/255.),str(color_p[2]/255.)])+"' />",
-        #         "        </emitter>",
-        #         "    </shape>\n"
-        #         ])
-        # else:
         xml_string+='\n'.join([
             "   <shape type='sphere'>",
             "        <transform name='toWorld'>",
-            "            <scale value='2' />",
+            "            <scale value='.1' />",
             "            <translate x='"+str(xyz_p[0])+"' y='"+str(xyz_p[1])+"' z='"+str(xyz_p[2])+"' />",
             "        </transform>",
-            "       <bsdf type='diffuse'>",
-            "            <spectrum name='reflectance' value='1, 1, 1' />",
-            "       </bsdf>",
+            "       <emitter type='area'>",
+            "            <spectrum name='radiance' value='"+", ".join([str(color_p[0]/255.),str(color_p[1]/255.),str(color_p[2]/255.)])+"' />",
+            "        </emitter>",
             "    </shape>\n"
             ])
+        # else:
+        # if xyz_p[1] <= -1.:
+        #     xml_string+='\n'.join([
+        #         "   <shape type='sphere'>",
+        #         "        <transform name='toWorld'>",
+        #         "            <scale value='.1' />",
+        #         "            <translate x='"+str(xyz_p[0])+"' y='"+str(xyz_p[1])+"' z='"+str(xyz_p[2])+"' />",
+        #         "        </transform>",
+        #         "       <bsdf type='diffuse'>",
+        #         "            <spectrum name='reflectance' value='1, 1, 1' />",
+        #         "       </bsdf>",
+        #         "    </shape>\n"
+        #         ])
 
     xml_string+="</scene>"
     

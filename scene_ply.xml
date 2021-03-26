@@ -28,6 +28,9 @@
 			<scale value="$objscale" />
 			<translate x="$objx" y="$objy" z="$objz" />
 		</transform>
+		<bsdf type="diffuse">
+			<spectrum name="reflectance" value="1, 1, 1"/>
+		</bsdf>
 		<string name="filename" value="$objply" />
 	</shape>
 	<shape type="sphere">

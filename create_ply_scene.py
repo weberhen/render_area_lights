@@ -11,7 +11,7 @@ layout = 'gt_layout/test/AG8A1520-others-200-1.37354-1.02082.txt'
 pickle_filename = '/Users/henriqueweber/datasets/LavalIndoor/output_deepparametric/test/predictedParams/AG8A1520-others-200-1.37354-1.02082.pkl'
 
 obj_pos = [.5,-5.15,-8]
-obj_ply = 'armadillo.ply'
+obj_ply = 'sphere.ply'
 obj_scale = '3'
 scene = 'scene_ply'
 
@@ -30,7 +30,7 @@ texture = cv2.resize(texture, (128,64))
 cor_id = read_cor_id(os.path.join(root_folder,layout), texture.shape)
 
 # get 3d points from layout
-rp = corners_to_xyz(cor_id, texture.shape[0], texture.shape[1], 4)
+rp = corners_to_xyz(cor_id, texture.shape[0], texture.shape[1], 4.5)
 gen_polygon_from_layout(rp, posCenters*depths)
 
 os.system(command)

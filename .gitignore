@@ -2,4 +2,7 @@
 *.exr
 *.log
 *.gif
+*.ply
 *.pyc
+area_light_scene.xml
+.DS_Store

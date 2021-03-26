@@ -9,7 +9,7 @@ root_folder = '/Users/henriqueweber/datasets/LavalIndoor/'
 filename = 'ldrOutputs/test/AG8A1520-others-200-1.37354-1.02082.png'
 layout = 'gt_layout/test/AG8A1520-others-200-1.37354-1.02082.txt'
 obj_pos = [.5,-5.15,-5]
-obj_ply = 'armadillo.ply'
+obj_ply = 'sphere.ply'
 obj_scale = '3'
 scene = 'scene_ply'
 
@@ -36,5 +36,5 @@ gen_colored_ply(xyz, uv_S, texture, 'colored_scene.ply')
 # create xml with area light sources
 gen_mitsuba_xml(xyz, uv_S, texture, 'area_light_scene.xml')
 
-os.system('mitsuba -Dobjx='+str(obj_pos[0])+' -Dobjy='+str(obj_pos[1])+' -Dobjz='+str(obj_pos[2])+' area_light_scene.xml')
+os.system('mitsuba -Dobjscale='+str(obj_scale)+' -Dobjx='+str(obj_pos[0])+' -Dobjy='+str(obj_pos[1])+' -Dobjz='+str(obj_pos[2])+' area_light_scene.xml')
 os.system("mtsutil tonemap -m 1 -o final_renders/background.png area_light_scene.exr")

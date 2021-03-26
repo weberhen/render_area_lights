@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene version="0.5.0">
+	<integrator type="multichannel">
+		<integrator type="path" />
+		<integrator type="field">
+			<string name="field" value="distance" />
+		</integrator>
+	</integrator>
+	<shape type="ply">
+		<string name="filename" value="scene.ply" />
+	</shape>
+	<sensor type="spherical">
+		<transform name="toWorld">
+			<lookat origin="0, 0, 0" target="0, 0, 1" up="0, 1, 0" />
+		</transform>
+		<sampler type="halton">
+			<integer name="sampleCount" value="32" />
+		</sampler>
+		<film type="hdrfilm">
+			<string name="pixelFormat" value="rgb, luminance" />
+			<string name="channelNames" value="color,  distance" />
+			<integer name="width" value="1024"/>
+			<integer name="height" value="512"/>
+		</film>
+	</sensor>
+</scene>

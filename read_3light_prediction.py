@@ -4,6 +4,7 @@ def read_3light_prediction(paramsPath):
     params = pickle.load(open(paramsPath, 'rb'))
     
     posCenters = params['posCenters']
+    posCenters[:,0]*=-1
     radius = params['radius']
     intensities = params['intensities']
     ambients = params['ambients']

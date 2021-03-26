@@ -17,8 +17,8 @@ command = 'mitsuba render_pano.xml'
 os.system(command)
 
 # scenes = ['render_sphere_envmap', 'render_sphere']
-scenes = ['render_armadillo_envmap', 'render_armadillo']
-
+# scenes = ['render_armadillo_envmap', 'render_armadillo']
+scenes = ['render_armadillo']
 
 posCenters, radius, intensities, ambients, depths = read_3light_prediction(pickle_filename)
 

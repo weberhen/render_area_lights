@@ -8,6 +8,10 @@ from gen_mitsuba_xml import gen_mitsuba_xml
 root_folder = 'test_data'
 filename = 'latlong.png'
 layout = 'latlong_layout.txt'
+obj_pos = [.5,-1.55,-1]
+obj_ply = 'armadillo.ply'
+obj_scale = '3'
+scene = 'scene_ply'
 
 # read pano
 texture = cv2.cvtColor(cv2.imread(os.path.join(root_folder, filename)), cv2.COLOR_BGR2RGB)
@@ -16,7 +20,7 @@ texture = cv2.cvtColor(cv2.imread(os.path.join(root_folder, filename)), cv2.COLO
 cor_id = read_cor_id(os.path.join(root_folder,layout), texture.shape)
 
 # get 3d points from layout
-rp = corners_to_xyz(cor_id, texture.shape[0], texture.shape[1], 100)
+rp = corners_to_xyz(cor_id, texture.shape[0], texture.shape[1], 1.65)
 gen_polygon_from_layout(rp)
 xyzp = xyz_from_depth(texture.shape[1], texture.shape[0], 'depth.png')
 xyz = np.array(xyzp)
@@ -32,5 +36,5 @@ gen_colored_ply(xyz, uv_S, texture, 'colored_scene.ply')
 # create xml with area light sources
 gen_mitsuba_xml(xyz, uv_S, texture, 'area_light_scene.xml')
 
-os.system('mitsuba -Dobjx=0 -Dobjy=-.23 -Dobjz=4 area_light_scene.xml')
+os.system('mitsuba -Dobjx='+str(obj_pos[0])+' -Dobjy='+str(obj_pos[1])+' -Dobjz='+str(obj_pos[2])+' area_light_scene.xml')
 os.system("mtsutil tonemap -m 1 area_light_scene.exr")

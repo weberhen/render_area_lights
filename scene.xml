@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene version="0.5.0">
 	<integrator type="multichannel">
-		<integrator type="path" />
+		<integrator type="direct" />
 		<integrator type="field">
 			<string name="field" value="distance" />
 		</integrator>

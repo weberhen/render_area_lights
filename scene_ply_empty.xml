@@ -2,7 +2,6 @@
 	<integrator type="bdpt">
 		<boolean name="hideEmitters" value="false" />
 		<integer name="maxDepth" value="128" />
-		<!-- <integer name="maxDepth" value="32" /> -->
 	</integrator>
 	<sensor type="perspective">
 		<float name="fov" value="80" />
@@ -22,13 +21,6 @@
 	</sensor>
     <shape type="ply">
 		<string name="filename" value="scene.ply" />
-	</shape>
-	<shape type="ply">
-		<transform name="toWorld">
-			<scale value="$objscale" />
-			<translate x="$objx" y="$objy" z="$objz" />
-		</transform>
-		<string name="filename" value="$objply" />
 	</shape>
 	<shape type="sphere">
 		<transform name="toWorld">

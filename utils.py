@@ -13,7 +13,6 @@ from rotlib import rotx, roty, rotz, rotate
 def read_cor_id(layout, shape):
     with open(layout) as f:
         cor_id = np.array([line.split() for line in f], np.float32)
-    cor_id*=8
     # last line of the text file is the size of the pano, here we make sure we 
     # are using the right dimensions to create the 3d 
     assert int(cor_id[-1,0]) == shape[1]
@@ -87,9 +86,9 @@ def np_coor2xz(coor, y=50, coorW=1024, coorH=512):
     z = c * np.cos(theta)
     
     return np.hstack([x[:, None], z[:, None]])
-    
-    
-def corners_to_xyz(cor_id, H, W, scale):
+
+
+def corners_to_xyz(cor_id, H, W, rot_mat, T, scale=1.0):
     '''
     Convert cor_id to 3d xyz
     '''
@@ -109,11 +108,38 @@ def corners_to_xyz(cor_id, H, W, scale):
     rp = [] # rotated points
     for xz in floor_xz:
         point = np.array([xz[0], floor_y, xz[1]])
-        rp.append(point)
+        rp.append(rotate(point, 'DCM', rot_mat)+T)
         point = np.array([xz[0], ceil_y, xz[1]])
-        rp.append(point)
+        rp.append(rotate(point, 'DCM', rot_mat)+T)
         
     return np.array(rp)
+
+    
+# def corners_to_xyz(cor_id, H, W, scale):
+#     '''
+#     Convert cor_id to 3d xyz
+#     '''
+#     camera_height = 1.6
+    
+#     floor_y = -camera_height
+#     floor_xz = np_coor2xz(cor_id[1::2], floor_y, W, H)
+#     c = np.sqrt((floor_xz**2).sum(1))
+#     phi = np_coory2phi(cor_id[0::2, 1], H)
+#     ceil_y = (c * np.tan(phi)).mean()
+    
+#     floor_xz*=scale
+#     floor_y*=scale
+#     ceil_y*=scale
+    
+#     # You apply T^-1 to the original layout from S
+#     rp = [] # rotated points
+#     for xz in floor_xz:
+#         point = np.array([xz[0], floor_y, xz[1]])
+#         rp.append(point)
+#         point = np.array([xz[0], ceil_y, xz[1]])
+#         rp.append(point)
+        
+#     return np.array(rp)
 
 
 def uvmap(uv_s, texture):

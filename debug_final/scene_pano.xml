@@ -8,10 +8,6 @@
 		<sampler type="independent">
 			<integer name="sampleCount" value="8" />
 		</sampler>
-		<transform name='toWorld'>
-			<!-- <rotate y='1' angle='180'/> -->
-			<!-- <translate x='0' y='0' z='1' /> -->
-		</transform>
 		<film type="hdrfilm">
 			<integer name="width" value="600" />
 			<integer name="height" value="400" />
@@ -22,7 +18,7 @@
 	</sensor>
 	<shape type="sphere">
 		<transform name="toWorld">
-			<scale value=".1" />
+			<scale value="$scale" />
 			<translate x="$objx" y="$objy" z="$objz" />
 		</transform>
 		<bsdf type="conductor">

@@ -12,7 +12,7 @@ def warp_non_parametric(obj_pos, envmap_filename, layout):
     T=np.array(obj_pos)*direction_corrector
         
     texture = cv2.imread(envmap_filename)
-    texture = cv2.resize(texture, (128,64))
+    texture = cv2.resize(texture, (512,256))
     #######
     #
     ####### 
@@ -29,8 +29,8 @@ def warp_non_parametric(obj_pos, envmap_filename, layout):
     # want. The last parameter define a scale we want to apply to the 
     # points, so we can more easily place the camera inside the scene.
     #######
-    scale = 1
-    # T*=scale/2
+    scale = 100
+    T*=scale
     
     # TODO remove debug
     # rp = corners_to_xyz(cor_id, texture.shape[0], texture.shape[1], rot_mat, np.array([0,0,0]), 1)

@@ -146,7 +146,7 @@ def uvmap(uv_s, texture):
     img = np.zeros(texture.shape)
     for i in range(img.shape[0]):
         for j in range(img.shape[1]):
-            img[i][j] = texture[int(uv_s[1][i][j]*img.shape[0])][int(uv_s[0][i][j]*img.shape[1])]
+            img[i][j] = texture[int(uv_s[1][i][j]*img.shape[0])][img.shape[1]-1-int(uv_s[0][i][j]*img.shape[1])]
     return img
 
 
@@ -315,12 +315,12 @@ def ensure_camera_inside_layout(obj_pos, rp):
     print("Limits of the room are (y): ", rp[:,1].min(), rp[:,1].max())
     print("Limits of the room are (z): ", rp[:,2].min(), rp[:,2].max())
     
-    assert (obj_pos[0] < (rp[:,0].max()-1)).all()
-    assert (obj_pos[0] > (rp[:,0].min()+1)).all()
-    assert (obj_pos[1] < (rp[:,1].max()-1)).all()
-    assert (obj_pos[1] > (rp[:,1].min()+1)).all()
-    assert (obj_pos[2] < (rp[:,2].max()-1)).all()
-    assert (obj_pos[2] > (rp[:,2].min()+1)).all()
+    assert (obj_pos[0] < (rp[:,0].max())).all()
+    assert (obj_pos[0] > (rp[:,0].min())).all()
+    assert (obj_pos[1] < (rp[:,1].max())).all()
+    assert (obj_pos[1] > (rp[:,1].min())).all()
+    assert (obj_pos[2] < (rp[:,2].max())).all()
+    assert (obj_pos[2] > (rp[:,2].min())).all()
     
 
 def rotation_matrix(azimuth, elevation, roll=0):

@@ -7,7 +7,7 @@ from gen_mitsuba_xml import gen_mitsuba_xml
 
 filename = '/Users/henriqueweber/codes/ldrestimator/test_data/crops/latlong.png'
 layout = '/Users/henriqueweber/codes/ldrestimator/test_data/latlong_layout.txt'
-obj_pos = np.array([0,0,1])
+obj_pos = np.array([0,-.3,2])
 
 scale = 2
 
@@ -43,7 +43,7 @@ os.system("mtsutil tonemap -m 1 -o non_parametric.png area_light_scene.exr")
 #now time to warp the panorama and render with a pano instead of area lights
 # warp_non_parametric(obj_pos, filename, layout)
 
-command = 'mitsuba -Denvmap=non_parametric.png -Dobjx='+str(obj_pos[0]*scale)+' -Dobjy='+str(obj_pos[1]*scale)+' -Dobjz='+str(obj_pos[2]*scale)+' debug/scene_pano.xml'
+command = 'mitsuba -Denvmap=non_parametric.png -Dscale='+str(scale*.1)+' -Dobjx='+str(obj_pos[0]*scale)+' -Dobjy='+str(obj_pos[1]*scale)+' -Dobjz='+str(obj_pos[2]*scale)+' debug_final/scene_pano.xml'
 print(command)
 os.system(command)
-os.system("mtsutil tonemap -m 1 -o debug/render_texture_warped_pano"+str(obj_pos[0])+"_"+str(obj_pos[1])+"_"+str(obj_pos[2])+".png debug/scene_pano.exr")
+os.system("mtsutil tonemap -m 1 -o debug_final/render_texture_warped_pano"+str(obj_pos[0])+"_"+str(obj_pos[1])+"_"+str(obj_pos[2])+".png debug_final/scene_pano.exr")

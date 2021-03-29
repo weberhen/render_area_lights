@@ -2,7 +2,7 @@ from os.path import join
 import numpy as np
 
 
-def gen_mitsuba_xml(xyz, uv_S, texture, filename):
+def gen_mitsuba_xml(xyz, cam_pos, uv_S, texture, filename):
     colors = np.zeros(xyz.shape)
     for i in range(uv_S.shape[1]):
         colors[i] = texture[int(uv_S[1][i]*texture.shape[0])][int(uv_S[0][i]*texture.shape[1])]
@@ -12,28 +12,32 @@ def gen_mitsuba_xml(xyz, uv_S, texture, filename):
                                 "       <boolean name='hideEmitters' value='false' />",
                                 "       <integer name='maxDepth' value='8'/>",
                                 "   </integrator>",
-                                "   <sensor type='perspective'>",
-                                "       <float name='fov' value='50' />",
+                                "   <sensor type='spherical'>",
+                                "       <transform name='toWorld'>",
+                                "           <rotate y='1' angle='180'/>",
+                                "           <translate x='"+str(cam_pos[0])+"' y='"+str(cam_pos[1])+"' z='"+str(cam_pos[2])+"' />",
+                                "       </transform>",
+                                # "       <float name='fov' value='50' />",
                                 "       <sampler type='independent'>",
                                 "           <integer name='sampleCount' value='8' />",
                                 "       </sampler>",
                                 "       <film type='hdrfilm'>",
                                 "           <integer name='width' value='600' />",
-                                "           <integer name='height' value='400' />",
+                                "           <integer name='height' value='300' />",
                                 "           <boolean name='banner' value='false' />",
                                 "           <string name='pixelFormat' value='rgba' />",
                                 "           <boolean name='attachLog' value='false' />",
                                 "       </film>",
                                 "   </sensor>",
-                                "    <shape type='sphere'>",
-                                "        <transform name='toWorld'>",
-                                "            <scale value='.1' />",
-                                "            <translate x='$objx' y='$objy' z='$objz' />",
-                                "        </transform>",
-                                "        <bsdf type='conductor'>",
-                                "            <string name='material' value='none' />",
-                                "        </bsdf>",
-                                "    </shape>",
+                                # "    <shape type='sphere'>",
+                                # "        <transform name='toWorld'>",
+                                # "            <scale value='.1' />",
+                                # "            <translate x='$objx' y='$objy' z='$objz' />",
+                                # "        </transform>",
+                                # "        <bsdf type='conductor'>",
+                                # "            <string name='material' value='none' />",
+                                # "        </bsdf>",
+                                # "    </shape>",
                                 # "   <shape type='ply'>",
                                 # "       <transform name='toWorld'>",
                                 # "           <scale value='100'/>",

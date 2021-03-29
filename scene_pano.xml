@@ -1,0 +1,31 @@
+<scene version="0.5.0">
+	<integrator type="path">
+		<boolean name="hideEmitters" value="false" />
+		<integer name="maxDepth" value="8" />
+	</integrator>
+	<sensor type="perspective">
+		<float name="fov" value="80" />
+		<sampler type="independent">
+			<integer name="sampleCount" value="8" />
+		</sampler>
+		<film type="hdrfilm">
+			<integer name="width" value="600" />
+			<integer name="height" value="400" />
+			<boolean name="banner" value="false" />
+			<string name="pixelFormat" value="rgba" />
+			<boolean name="attachLog" value="false" />
+		</film>
+	</sensor>
+	<shape type="sphere">
+		<transform name="toWorld">
+			<scale value="$scale" />
+			<translate x="$objx" y="$objy" z="$objz" />
+		</transform>
+		<bsdf type="conductor">
+			<string name="material" value="none" />
+		</bsdf>
+	</shape>
+	<emitter type="envmap">
+        <string name="filename" value="$envmap" />
+	</emitter>
+</scene>

@@ -10,6 +10,6 @@ c=4
 Rf = cv2.bilateralFilter(R,15,75,75)
 Ef = cv2.bilateralFilter(E,15,75,75)
 
-composite = M*R + (1-M)*(I + (Rf-Ef)*c)#+(1-M)*(Rf-Ef)*c)
+composite = M*R + (1-M)*(I + (Rf-Ef)*c)
 
 cv2.imwrite('final_renders/composite.png', composite)

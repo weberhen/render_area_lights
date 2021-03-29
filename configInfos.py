@@ -11,11 +11,9 @@ This module also contains a logging helper function
 """
 import json
 import time
-import pickle
 import os
 from copy import deepcopy
 
-import numpy as np
 
 __config = None
 __configDefault = None

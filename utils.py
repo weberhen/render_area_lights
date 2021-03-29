@@ -6,6 +6,7 @@ import cv2
 from scipy.spatial import Delaunay
 from envmap import EnvironmentMap
 import Imath
+import pickle
 import OpenEXR
 from rotlib import rotx, roty, rotz, rotate
 
@@ -114,32 +115,93 @@ def corners_to_xyz(cor_id, H, W, rot_mat, T, scale=1.0):
         
     return np.array(rp)
 
-    
-# def corners_to_xyz(cor_id, H, W, scale):
-#     '''
-#     Convert cor_id to 3d xyz
-#     '''
-#     camera_height = 1.6
-    
-#     floor_y = -camera_height
-#     floor_xz = np_coor2xz(cor_id[1::2], floor_y, W, H)
-#     c = np.sqrt((floor_xz**2).sum(1))
-#     phi = np_coory2phi(cor_id[0::2, 1], H)
-#     ceil_y = (c * np.tan(phi)).mean()
-    
-#     floor_xz*=scale
-#     floor_y*=scale
-#     ceil_y*=scale
-    
-#     # You apply T^-1 to the original layout from S
-#     rp = [] # rotated points
-#     for xz in floor_xz:
-#         point = np.array([xz[0], floor_y, xz[1]])
-#         rp.append(point)
-#         point = np.array([xz[0], ceil_y, xz[1]])
-#         rp.append(point)
+
+def gen_mitsuba_xml(xyz, cam_pos, uv_S, texture, filename):
+    colors = np.zeros(xyz.shape)
+    for i in range(uv_S.shape[1]):
+        colors[i] = texture[int(uv_S[1][i]*texture.shape[0])][int(uv_S[0][i]*texture.shape[1])]
         
-#     return np.array(rp)
+    xml_string = '\n'.join(["<scene version='0.5.0'>",
+                                "   <integrator type='path'>",
+                                "       <boolean name='hideEmitters' value='false' />",
+                                "       <integer name='maxDepth' value='8'/>",
+                                "   </integrator>",
+                                "   <sensor type='spherical'>",
+                                "       <transform name='toWorld'>",
+                                "           <rotate y='1' angle='180'/>",
+                                "           <translate x='"+str(cam_pos[0])+"' y='"+str(cam_pos[1])+"' z='"+str(cam_pos[2])+"' />",
+                                "       </transform>",
+                                "       <sampler type='independent'>",
+                                "           <integer name='sampleCount' value='8' />",
+                                "       </sampler>",
+                                "       <film type='hdrfilm'>",
+                                "           <integer name='width' value='600' />",
+                                "           <integer name='height' value='300' />",
+                                "           <boolean name='banner' value='false' />",
+                                "           <string name='pixelFormat' value='rgba' />",
+                                "           <boolean name='attachLog' value='false' />",
+                                "       </film>",
+                                "   </sensor>",
+                                ])
+    
+    for xyz_p, color_p in zip(xyz, colors):
+        xml_string+='\n'.join([
+            "   <shape type='sphere'>",
+            "        <transform name='toWorld'>",
+            "            <scale value='.1' />",
+            "            <translate x='"+str(xyz_p[0])+"' y='"+str(xyz_p[1])+"' z='"+str(xyz_p[2])+"' />",
+            "        </transform>",
+            "       <emitter type='area'>",
+            "            <spectrum name='radiance' value='"+", ".join([str(color_p[0]/255.),str(color_p[1]/255.),str(color_p[2]/255.)])+"' />",
+            "        </emitter>",
+            "    </shape>\n"
+            ])
+
+    xml_string+="</scene>"
+    
+    with open(filename, "w") as a_file:
+        a_file.write(xml_string)
+
+
+def create_mitsuba_command(obj_pos, obj_ply, obj_scale, posCenters, radius, intensities, ambients, depths, scene_filename):
+    posLights = posCenters*depths
+    command = ' '.join(['mitsuba',
+                       '-Dobjply='+str(obj_ply),
+                       '-Dobjscale='+str(obj_scale),
+                       '-Dobjx='+str(obj_pos[0]),
+                       '-Dobjy='+str(obj_pos[1]),
+                       '-Dobjz='+str(obj_pos[2]),
+                       '-DposL1x='+str(posLights[0,0]),
+                       '-DposL1y='+str(posLights[0,1]),
+                       '-DposL1z='+str(posLights[0,1]),
+                       '-DposL2x='+str(posLights[1,0]),
+                       '-DposL2y='+str(posLights[1,1]),
+                       '-DposL2z='+str(posLights[1,1]),
+                       '-DposL3x='+str(posLights[2,0]),
+                       '-DposL3y='+str(posLights[2,1]),
+                       '-DposL3z='+str(posLights[2,1]),
+                       '-DscaleL1='+str(radius[0]),
+                       '-DscaleL2='+str(radius[1]),
+                       '-DscaleL3='+str(radius[2]),
+                       '-DintL1="'+str(', '.join([str(i) for i in intensities[0]]))+'"',
+                       '-DintL2="'+str(', '.join([str(i) for i in intensities[1]]))+'"',
+                       '-DintL3="'+str(', '.join([str(i) for i in intensities[2]]))+'"',
+                       scene_filename+'.xml'])
+    
+    return command
+
+
+def read_3light_prediction(paramsPath):
+    params = pickle.load(open(paramsPath, 'rb'))
+    
+    posCenters = params['posCenters']
+    posCenters[:,0]*=-1
+    radius = params['radius']
+    intensities = params['intensities']
+    ambients = params['ambients']
+    depths = params['depths']
+    
+    return posCenters, radius, intensities, ambients, depths
 
 
 def uvmap(uv_s, texture):

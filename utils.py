@@ -163,11 +163,9 @@ def gen_mitsuba_xml(xyz, cam_pos, uv_S, texture, filename):
         a_file.write(xml_string)
 
 
-def create_mitsuba_command(obj_pos, obj_ply, obj_scale, posCenters, radius, intensities, ambients, depths, scene_filename):
+def create_mitsuba_command(obj_pos, posCenters, radius, intensities, ambients, depths, scene_filename):
     posLights = posCenters*depths
     command = ' '.join(['mitsuba',
-                       '-Dobjply='+str(obj_ply),
-                       '-Dobjscale='+str(obj_scale),
                        '-Dobjx='+str(obj_pos[0]),
                        '-Dobjy='+str(obj_pos[1]),
                        '-Dobjz='+str(obj_pos[2]),

@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 from utils import read_cor_id, corners_to_xyz, gen_polygon_from_layout, xyz_from_depth, normalize, gen_colored_ply, gen_mitsuba_xml
 from envmap.projections import world2latlong
-
+import torch
 
 filename = '/Users/henriqueweber/codes/ldrestimator/test_data/crops/latlong.png'
 layout = '/Users/henriqueweber/codes/ldrestimator/test_data/latlong_layout.txt'

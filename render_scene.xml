@@ -4,7 +4,7 @@
 		<integer name="maxDepth" value="8" />
 	</integrator>
 	<sensor type="perspective">
-		<float name="fov" value="80" />
+		<float name="fov" value="100" />
 		<sampler type="independent">
 			<integer name="sampleCount" value="8" />
 		</sampler>
@@ -18,7 +18,7 @@
 	</sensor>
 	<shape type="sphere">
 		<transform name="toWorld">
-			<scale value="$scale" />
+			<scale value=".1" />
 			<translate x="$objx" y="$objy" z="$objz" />
 		</transform>
 		<bsdf type="conductor">
@@ -31,8 +31,8 @@
 		</bsdf>
 		<transform name="toWorld">
 			<rotate x="1" angle="-120" />
-			<scale x=".4" y=".5" z="10" />
-			<translate x=".05" y="-.18" z="10" />
+			<scale x="2"  z="10" />
+			<translate y=".4" z="9" />
 		</transform>
 	</shape>
 	<emitter type="envmap">

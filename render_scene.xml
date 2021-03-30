@@ -1,13 +1,16 @@
 <scene version="0.5.0">
 	<integrator type="path">
-		<boolean name="hideEmitters" value="false" />
-		<integer name="maxDepth" value="8" />
+		<boolean name="hideEmitters" value="true" />
+		<integer name="maxDepth" value="32" />
 	</integrator>
 	<sensor type="perspective">
 		<float name="fov" value="100" />
 		<sampler type="independent">
-			<integer name="sampleCount" value="8" />
+			<integer name="sampleCount" value="32" />
 		</sampler>
+		<transform name="toWorld">
+			<lookat origin="0, 0, 0" target="0, 0, 1" up="0, 1, 0"/>
+		</transform>
 		<film type="hdrfilm">
 			<integer name="width" value="600" />
 			<integer name="height" value="400" />
@@ -18,7 +21,7 @@
 	</sensor>
 	<shape type="sphere">
 		<transform name="toWorld">
-			<scale value=".1" />
+			<scale value=".5" />
 			<translate x="$objx" y="$objy" z="$objz" />
 		</transform>
 		<bsdf type="conductor">
@@ -30,9 +33,9 @@
 			<spectrum name="reflectance" value="1, 1, 1" />
 		</bsdf>
 		<transform name="toWorld">
-			<rotate x="1" angle="-120" />
+			<rotate x="1" angle="-90" />
 			<scale x="2"  z="10" />
-			<translate y=".4" z="9" />
+			<translate y="-.5" z="5" />
 		</transform>
 	</shape>
 	<emitter type="envmap">

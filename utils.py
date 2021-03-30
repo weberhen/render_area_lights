@@ -9,6 +9,9 @@ import Imath
 import pickle
 import OpenEXR
 from rotlib import rotx, roty, rotz, rotate
+import hdrio
+import imageio
+from scipy.ndimage.interpolation import zoom
 
 
 def read_cor_id(layout, shape):
@@ -116,6 +119,28 @@ def corners_to_xyz(cor_id, H, W, rot_mat, T, scale=1.0):
     return np.array(rp)
 
 
+def compose(background_filename, object_filename, output_filename, global_modifier_factor=1):
+    # read exr
+    imRender = hdrio.imread(object_filename).astype('float32')
+    imInput = imageio.imread(background_filename).astype('float32')[:,:,0:3] / 255.
+    
+    imInputResized = zoom(imInput, (imRender.shape[0]/imInput.shape[0], imRender.shape[1]/imInput.shape[1], 1.0), order=2)
+    
+    imInputResized = imInputResized ** 2.2 # undo gamma on crop
+    
+    alphaRender = imRender[..., 3:4]
+    
+    imRender = (imRender[..., :3]*global_modifier_factor)**(1/2.2)
+    imCompose = (1-alphaRender)*imInputResized + alphaRender*imRender
+    
+    imCompose = imCompose**(1/2.2) # apply gamma on compose
+    
+    imComposeUint8 = (np.clip(imCompose, 0.0, 1.0)*255).astype('uint8')
+    
+    imageio.imsave(output_filename, imComposeUint8)
+    
+    print("\tCompositing done...")
+
 def gen_mitsuba_xml(xyz, cam_pos, uv_S, texture, filename):
     colors = np.zeros(xyz.shape)
     for i in range(uv_S.shape[1]):
@@ -148,7 +173,7 @@ def gen_mitsuba_xml(xyz, cam_pos, uv_S, texture, filename):
         xml_string+='\n'.join([
             "   <shape type='sphere'>",
             "        <transform name='toWorld'>",
-            "            <scale value='.1' />",
+            "            <scale value='1' />",
             "            <translate x='"+str(xyz_p[0])+"' y='"+str(xyz_p[1])+"' z='"+str(xyz_p[2])+"' />",
             "        </transform>",
             "       <emitter type='area'>",

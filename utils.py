@@ -17,6 +17,7 @@ from scipy.ndimage.interpolation import zoom
 def read_cor_id(layout, shape):
     with open(layout) as f:
         cor_id = np.array([line.split() for line in f], np.float32)
+    
     # last line of the text file is the size of the pano, here we make sure we 
     # are using the right dimensions to create the 3d 
     assert int(cor_id[-1,0]) == shape[1]
@@ -119,10 +120,9 @@ def corners_to_xyz(cor_id, H, W, rot_mat, T, scale=1.0):
     return np.array(rp)
 
 
-def compose(background_filename, object_filename, output_filename, global_modifier_factor=1):
+def compose(imInput, object_filename, output_filename, global_modifier_factor=1):
     # read exr
     imRender = hdrio.imread(object_filename).astype('float32')
-    imInput = imageio.imread(background_filename).astype('float32')[:,:,0:3] / 255.
     
     imInputResized = zoom(imInput, (imRender.shape[0]/imInput.shape[0], imRender.shape[1]/imInput.shape[1], 1.0), order=2)
     
